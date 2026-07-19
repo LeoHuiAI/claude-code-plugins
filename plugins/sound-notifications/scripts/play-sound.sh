@@ -1,31 +1,35 @@
 #!/usr/bin/env bash
 #
-# Play a short sound for Claude Code hook events.
+# Play a short sound for a Claude Code lifecycle hook event.
 #
-#   Usage: play-sound.sh notify   # 需要你确认 / 输入时
-#          play-sound.sh done     # 一轮任务完成时
+#   Usage: play-sound.sh <event>
+#   event: notification | stop     (aliases: notify | done)
 #
 # 跨平台：macOS 用 afplay + 系统内置音；Linux 用 paplay/ffplay + freedesktop 音；
-# 其它平台退化为终端响铃。任何失败都静默，绝不阻塞 Claude Code。
+# 其它平台退化为终端响铃。播放放到后台、始终 exit 0——绝不阻塞、绝不让 hook 失败。
 
-kind="${1:-notify}"
+event="${1:-notification}"
 os="$(uname -s)"
+
+case "$event" in
+  notification|notify) role="notify" ;;
+  stop|done)           role="done" ;;
+  *)                   role="notify" ;;
+esac
 
 case "$os" in
   Darwin)
-    case "$kind" in
+    case "$role" in
       notify) sound="/System/Library/Sounds/Submarine.aiff" ;;
       done)   sound="/System/Library/Sounds/Glass.aiff" ;;
-      *)      sound="/System/Library/Sounds/Submarine.aiff" ;;
     esac
-    [ -f "$sound" ] && afplay "$sound" 2>/dev/null &
+    [ -f "$sound" ] && afplay "$sound" >/dev/null 2>&1 &
     ;;
 
   Linux)
-    case "$kind" in
+    case "$role" in
       notify) name="dialog-information" ;;
       done)   name="complete" ;;
-      *)      name="bell" ;;
     esac
     played=0
     for f in \
@@ -33,7 +37,7 @@ case "$os" in
       "/usr/share/sounds/freedesktop/stereo/bell.oga"; do
       [ -f "$f" ] || continue
       if command -v paplay >/dev/null 2>&1; then
-        paplay "$f" 2>/dev/null & played=1; break
+        paplay "$f" >/dev/null 2>&1 & played=1; break
       elif command -v ffplay >/dev/null 2>&1; then
         ffplay -nodisp -autoexit "$f" >/dev/null 2>&1 & played=1; break
       fi

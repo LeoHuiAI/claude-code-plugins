@@ -1,0 +1,15 @@
+{
+  "name": "sound-notifications",
+  "displayName": "Sound Notifications",
+  "description": "Play a distinct sound when Claude Code needs your confirmation, and another when a turn finishes. macOS / Linux / WSL.",
+  "version": "1.0.0",
+  "author": {
+    "name": "LeoHuiAI",
+    "url": "https://github.com/LeoHuiAI"
+  },
+  "homepage": "https://github.com/LeoHuiAI/claude-code-plugins",
+  "repository": "https://github.com/LeoHuiAI/claude-code-plugins",
+  "license": "MIT",
+  "keywords": ["hooks", "notification", "sound", "audio", "productivity"],
+  "hooks": "./hooks/hooks.json"
+}

@@ -1,0 +1,22 @@
+{
+  "name": "leohuiai-plugins",
+  "owner": {
+    "name": "LeoHuiAI",
+    "url": "https://github.com/LeoHuiAI"
+  },
+  "metadata": {
+    "description": "LeoHui 的 Claude Code 插件集合",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "sound-notifications",
+      "source": "./plugins/sound-notifications",
+      "description": "🔊 需要你确认时响一声，任务完成再响一声。跨平台 macOS / Linux / WSL。",
+      "version": "1.0.0",
+      "author": {
+        "name": "LeoHuiAI"
+      }
+    }
+  ]
+}
